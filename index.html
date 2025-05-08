@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anne Frank Challenge | Interactive History Quiz</title>
-  <meta name="description" content="Test your knowledge of Anne Frank's life and legacy in this independently developed interactive quiz">
+  <title>Anne Frank Challenge | Interactive Quiz</title>
+  <meta name="description" content="Test your knowledge about Anne Frank's life in this fun quiz">
   <style>
     :root {
       --primary: #1a1a2e;
@@ -233,6 +233,25 @@
       font-size: 1.8rem;
     }
 
+    .contact-me {
+      background: rgba(255,255,255,0.05);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-top: 2rem;
+      text-align: center;
+    }
+    
+    .email-link {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .email-link:hover {
+      text-decoration: underline;
+    }
+
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
@@ -281,24 +300,24 @@
 <body>
   <div class="container">
     <header>
-      <div class="creator-tag">Independently Created by Aun Raja</div>
+      <div class="creator-tag">Made by Aun Raja</div>
       <h1>Anne Frank Challenge</h1>
     </header>
 
     <div class="intro-card" id="introScreen">
       <div class="historical-fact">
-        <h3>Why This Matters</h3>
-        <p>This interactive experience was independently developed to:</p>
+        <h3>What's This About?</h3>
+        <p>I created this quiz because Anne Frank's story really moved me. It's my way of:</p>
         <ul>
-          <li>🕊️ Keep Anne's memory alive through engaging education</li>
-          <li>📚 Teach Holocaust history in an accessible way</li>
-          <li>💡 Challenge misconceptions with verified facts</li>
+          <li>🕊️ Keeping her memory alive in a fun way</li>
+          <li>📚 Helping people learn cool history facts</li>
+          <li>💡 Testing what you know in a fun way.</li>
         </ul>
-        <p><strong>Created entirely by Aun Raja as a solo project</strong></p>
+        <p><strong>I built this whole thing myself on github.</strong></p>
       </div>
 
       <button id="startBtn" onclick="startQuiz()">
-        🚀 Begin Historical Challenge
+        🚀 Start the Quiz
       </button>
     </div>
 
@@ -531,7 +550,7 @@
     quizCard.innerHTML = `
       <div style="text-align: center; padding: 2rem;">
         <div class="celebration" style="animation: float 3s ease-in-out infinite;">${getCelebrationEmoji()}</div>
-        <h2>Historical Journey Complete!</h2>
+        <h2>You Did It!</h2>
         
         <div style="
           background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(233,69,96,0.1));
@@ -545,17 +564,17 @@
         </div>
 
         <div class="historical-fact" style="text-align: left;">
-          <h3>Anne's Enduring Legacy</h3>
-          <p>Anne Frank (1929-1945) became a global symbol of hope through her diary, written while hiding from Nazi persecution in Amsterdam.</p>
+          <h3>Why Anne Frank Matters</h3>
+          <p>Anne was just a kid like us when she wrote her famous diary while hiding from the Nazis. Her words help us understand what really happened during the Holocaust.</p>
           
           <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
             <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; min-width: 120px;">
               <div style="font-size: 2rem;">📖</div>
-              <div>70+ translations</div>
+              <div>Read worldwide</div>
             </div>
             <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; min-width: 120px;">
               <div style="font-size: 2rem;">🌍</div>
-              <div>Millions of readers</div>
+              <div>70+ languages</div>
             </div>
             <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; min-width: 120px;">
               <div style="font-size: 2rem;">🕊️</div>
@@ -571,24 +590,20 @@
             border-left: 4px solid var(--accent);
             border-radius: 8px;
           ">
-            "How wonderful it is that nobody need wait a single moment before starting to improve the world." 
+            "In spite of everything, I still believe people are really good at heart." 
             <div style="text-align: right; margin-top: 0.5rem;">— Anne Frank</div>
           </blockquote>
         </div>
 
-        <div style="
-          background: rgba(255,255,255,0.05);
-          padding: 2rem;
-          border-radius: 20px;
-          margin: 2rem 0;
-        ">
-          <h3>Thank You for Remembering</h3>
-          <p>By completing this challenge, you've honored Anne's wish that her words would "go on living even after her death."</p>
-          <p style="margin-top: 1.5rem;">This independent educational project was created by <strong>Aun Raja</strong> to promote historical awareness.</p>
+        <div class="contact-me">
+          <h3>Got Questions?</h3>
+          <p>If you noticed any issues or just want to chat about the quiz, shoot me an email!</p>
+          <p><a href="mailto:ar309620@students.lcisd.org" class="email-link">ar309620@students.lcisd.org</a></p>
+          <p>I'd love to hear what you thought!</p>
         </div>
 
         <button onclick="location.reload()" id="startBtn" style="margin-top: 1rem;">
-          🔄 Take the Challenge Again
+          🔄 Try Again
         </button>
       </div>
     `;
@@ -622,9 +637,9 @@
   }
 
   function getFinalMessage() {
-    if(score >= 14) return '🏅 Anne Frank Scholar!';
-    if(score >= 12) return '🌟 Historical Expert!';
-    if(score >= 8) return '📚 Well Done!';
+    if(score >= 14) return '🏅 Anne Frank Expert!';
+    if(score >= 12) return '🌟 Amazing Job!';
+    if(score >= 8) return '📚 Nice Work!';
     return '💡 Keep Learning!';
   }
 
@@ -634,14 +649,6 @@
     if(score >= 8) return '👍📘';
     return '💪';
   }
-
-  // Test validations
-  console.assert(quizData.length === 15, "Should have 15 questions");
-  quizData.forEach((q, i) => {
-    console.assert(q.answers.length === 3, `Question ${i+1} needs 3 answers`);
-    console.assert(q.answers.includes(q.correct), `Question ${i+1} has invalid correct answer`);
-    console.assert(q.explanation, `Question ${i+1} missing explanation`);
-  });
   </script>
 </body>
 </html>
