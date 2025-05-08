@@ -127,11 +127,13 @@
     .correct {
       background: linear-gradient(135deg, rgba(46,204,113,0.3), rgba(46,204,113,0.2)) !important;
       border-color: #2ecc71 !important;
+      animation: correctPulse 0.5s ease;
     }
 
     .incorrect {
       background: linear-gradient(135deg, rgba(231,76,60,0.3), rgba(231,76,60,0.2)) !important;
       border-color: #e74c3c !important;
+      animation: shake 0.5s ease;
     }
 
     .progress-container {
@@ -166,6 +168,7 @@
       margin: 1.5rem 0;
       border-radius: 8px;
       position: relative;
+      animation: fadeIn 0.5s ease;
     }
 
     .correct-explanation {
@@ -176,6 +179,14 @@
     .incorrect-explanation {
       background: linear-gradient(135deg, rgba(231,76,60,0.1), rgba(231,76,60,0.05));
       border-left: 4px solid #e74c3c;
+    }
+
+    .answer-explanation {
+      background: rgba(255,255,255,0.05);
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border-left: 3px solid rgba(255,255,255,0.2);
     }
 
     #nextBtn {
@@ -257,9 +268,20 @@
       50% { transform: scale(1.05); }
     }
 
+    @keyframes correctPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(46, 204, 113, 0.5); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes slideUp {
@@ -313,7 +335,7 @@
           <li>📚 Helping people learn cool history facts</li>
           <li>💡 Testing what you know (no pressure!)</li>
         </ul>
-        <p><strong>I built this whole thing myself on github. If you have any questions how just let me know.</strong></p>
+        <p><strong>I built this whole thing myself on github if you have an questions how let me know!!</strong></p>
       </div>
 
       <button id="startBtn" onclick="startQuiz()">
@@ -340,93 +362,138 @@
   const quizData = [
     {
       question: "What was the exact date the Frank family went into hiding?",
-      answers: ["June 12, 1942 (Anne's birthday)", "July 6, 1942", "September 1, 1942"],
-      correct: "July 6, 1942",
-      explanation: "The Frank family entered the Secret Annex on July 6, 1942, after Margot received a call-up notice for a Nazi work camp."
+      answers: [
+        {text: "June 12, 1942 (Anne's birthday)", explanation: "This was Anne's 13th birthday when she received the diary, but they went into hiding a few weeks later."},
+        {text: "July 6, 1942", explanation: "Correct! The family entered hiding after Margot received a call-up notice for a Nazi work camp."},
+        {text: "September 1, 1942", explanation: "This was after they were already in hiding for nearly two months."}
+      ],
+      correct: 1
     },
     {
       question: "Which Nazi official led the raid on the Secret Annex?",
-      answers: ["Adolf Eichmann", "Karl Silberbauer", "Heinrich Himmler"],
-      correct: "Karl Silberbauer",
-      explanation: "SS-Oberscharführer Karl Silberbauer conducted the raid on August 4, 1944, after receiving an anonymous tip."
+      answers: [
+        {text: "Adolf Eichmann", explanation: "Eichmann organized deportations but wasn't directly involved in this raid."},
+        {text: "Karl Silberbauer", explanation: "Correct! The Austrian SS officer who arrested the residents."},
+        {text: "Heinrich Himmler", explanation: "As head of the SS, he wasn't involved in individual raids."}
+      ],
+      correct: 1
     },
     {
       question: "What percentage of Dutch Jews were deported during the Holocaust?",
-      answers: ["About 50%", "Approximately 73%", "Nearly 90%"],
-      correct: "Approximately 73%",
-      explanation: "Approximately 73% of Dutch Jews perished - the highest percentage in Western Europe."
+      answers: [
+        {text: "About 50%", explanation: "Actually much higher - the Netherlands had one of the highest deportation rates."},
+        {text: "Approximately 73%", explanation: "Correct! One of the highest percentages in Western Europe."},
+        {text: "Nearly 90%", explanation: "While horrifically high, the number was slightly lower than this."}
+      ],
+      correct: 1
     },
     {
       question: "Where did Anne and Margot Frank die?",
-      answers: ["Auschwitz", "Bergen-Belsen", "Sobibor"],
-      correct: "Bergen-Belsen",
-      explanation: "The sisters died of typhus in Bergen-Belsen in early 1945, just weeks before liberation."
+      answers: [
+        {text: "Auschwitz", explanation: "They were sent here first but transferred to Bergen-Belsen."},
+        {text: "Bergen-Belsen", explanation: "Correct! Both died of typhus here in early 1945."},
+        {text: "Sobibor", explanation: "This was an extermination camp, but the Franks weren't sent there."}
+      ],
+      correct: 1
     },
     {
       question: "What was Anne's original title for her diary?",
-      answers: ["The Secret Annex", "Diary of a Young Girl", "My Hidden Years"],
-      correct: "The Secret Annex",
-      explanation: "Anne titled her work 'Het Achterhuis' (The Secret Annex), envisioning it as a novel about her experience."
+      answers: [
+        {text: "The Secret Annex", explanation: "Correct! She called it 'Het Achterhuis' in Dutch."},
+        {text: "Diary of a Young Girl", explanation: "This was the title given when published in English."},
+        {text: "My Hidden Years", explanation: "A descriptive title but not what Anne called it."}
+      ],
+      correct: 0
     },
     {
       question: "Which helper was arrested with the annex residents?",
-      answers: ["Miep Gies", "Victor Kugler", "Johannes Kleiman"],
-      correct: "Victor Kugler",
-      explanation: "Victor Kugler was imprisoned but survived. Miep Gies wasn't arrested as the officer recognized her Austrian heritage."
+      answers: [
+        {text: "Miep Gies", explanation: "Miep wasn't arrested - the arresting officer recognized her as a fellow Austrian."},
+        {text: "Victor Kugler", explanation: "Correct! He was imprisoned but survived the war."},
+        {text: "Johannes Kleiman", explanation: "He was arrested but released due to health issues."}
+      ],
+      correct: 1
     },
     {
       question: "How did Anne organize her diary entries?",
-      answers: ["Single notebook", "Three notebooks with loose pages", "Daily letters to an imaginary friend"],
-      correct: "Three notebooks with loose pages",
-      explanation: "Anne used 3 notebooks and 324 loose sheets between 1942-1944, later revising her work for publication."
+      answers: [
+        {text: "Single notebook", explanation: "She actually used multiple notebooks."},
+        {text: "Three notebooks with loose pages", explanation: "Correct! Plus 324 loose sheets of paper."},
+        {text: "Daily letters to an imaginary friend", explanation: "She wrote letters to 'Kitty' but these were in notebooks."}
+      ],
+      correct: 1
     },
     {
       question: "What proved the diary's authenticity?",
-      answers: ["Handwriting analysis by German police", "Testimony from Miep Gies", "Otto Frank's verification"],
-      correct: "Handwriting analysis by German police",
-      explanation: "The German Federal Criminal Police Office conducted forensic analysis in 1980, confirming the handwriting was Anne's."
+      answers: [
+        {text: "Handwriting analysis by German police", explanation: "Correct! The Bundeskriminalamt confirmed it was Anne's writing."},
+        {text: "Testimony from Miep Gies", explanation: "Miep saved the diary but scientific analysis proved its authenticity."},
+        {text: "Otto Frank's verification", explanation: "While he authenticated the content, scientific proof came later."}
+      ],
+      correct: 0
     },
     {
       question: "Where was Anne Frank born?",
-      answers: ["Amsterdam", "Berlin", "Frankfurt"],
-      correct: "Frankfurt",
-      explanation: "Anne was born in Frankfurt, Germany on June 12, 1929. Her family moved to Amsterdam in 1933 after Hitler rose to power."
+      answers: [
+        {text: "Amsterdam", explanation: "The family moved here when Anne was 4."},
+        {text: "Berlin", explanation: "They lived in Germany but not in Berlin."},
+        {text: "Frankfurt", explanation: "Correct! Born here June 12, 1929."}
+      ],
+      correct: 2
     },
     {
       question: "What recognition did the diary receive posthumously?",
-      answers: ["Pulitzer Prize", "Prix de Paris", "Nobel Peace Prize nomination"],
-      correct: "Prix de Paris",
-      explanation: "Anne won the Prix de Paris literary prize in 1957 through a competition she had entered in 1944."
+      answers: [
+        {text: "Pulitzer Prize", explanation: "While famous, it never won this award."},
+        {text: "Prix de Paris", explanation: "Correct! A literary prize Anne had entered before her death."},
+        {text: "Nobel Peace Prize nomination", explanation: "While impactful, it wasn't nominated for this."}
+      ],
+      correct: 1
     },
     {
       question: "What business operated in the building hiding the annex?",
-      answers: ["A bank", "Opekta Works (pectin company)", "A publishing house"],
-      correct: "Opekta Works (pectin company)",
-      explanation: "Otto Frank's company Opekta Pectin (later Gies & Co) operated on the Prinsengracht canal premises."
+      answers: [
+        {text: "A bank", explanation: "No financial business operated there."},
+        {text: "Opekta Works (pectin company)", explanation: "Correct! Otto Frank's pectin and spice company."},
+        {text: "A publishing house", explanation: "Ironically fitting but not accurate."}
+      ],
+      correct: 1
     },
     {
       question: "Which event gave Anne hope in June 1944?",
-      answers: ["Italian surrender", "D-Day landings", "Stalingrad victory"],
-      correct: "D-Day landings",
-      explanation: "The D-Day invasion on June 6, 1944 made Anne believe liberation was near, as reflected in her final entries."
+      answers: [
+        {text: "Italian surrender", explanation: "This happened earlier in 1943."},
+        {text: "D-Day landings", explanation: "Correct! The Allied invasion made her hopeful liberation was near."},
+        {text: "Stalingrad victory", explanation: "This was in early 1943 - before their arrest."}
+      ],
+      correct: 1
     },
     {
       question: "What caused Anne and Margot's deaths?",
-      answers: ["Starvation", "Typhus epidemic", "Execution"],
-      correct: "Typhus epidemic",
-      explanation: "A typhus epidemic killed about 17,000 Bergen-Belsen prisoners in early 1945, including the Frank sisters."
+      answers: [
+        {text: "Starvation", explanation: "Conditions were terrible but disease was the immediate cause."},
+        {text: "Typhus epidemic", explanation: "Correct! A typhus outbreak killed about 17,000 at Bergen-Belsen."},
+        {text: "Execution", explanation: "They weren't executed - they died from disease."}
+      ],
+      correct: 1
     },
     {
       question: "Where are the original diary pages preserved?",
-      answers: ["Anne Frank House", "NIOD Institute", "Yad Vashem"],
-      correct: "NIOD Institute",
-      explanation: "The Netherlands Institute for War Documentation (NIOD) in Amsterdam preserves the original manuscripts."
+      answers: [
+        {text: "Anne Frank House", explanation: "The museum displays copies but not the originals."},
+        {text: "NIOD Institute", explanation: "Correct! The Netherlands Institute for War Documentation preserves them."},
+        {text: "Yad Vashem", explanation: "Israel's Holocaust memorial has copies but not the originals."}
+      ],
+      correct: 1
     },
     {
       question: "What was edited from early diary editions?",
-      answers: ["Only critical remarks", "Only personal reflections", "Both personal and critical content"],
-      correct: "Both personal and critical content",
-      explanation: "Otto Frank removed about 30% of content including Anne's sexual development notes and criticisms of others."
+      answers: [
+        {text: "Only critical remarks", explanation: "Otto Frank removed more than just criticisms."},
+        {text: "Only personal reflections", explanation: "He edited both personal and critical content."},
+        {text: "Both personal and critical content", explanation: "Correct! About 30% was removed initially."}
+      ],
+      correct: 2
     }
   ];
 
@@ -437,7 +504,7 @@
   function initializeQuiz() {
     randomizedQuestions = quizData.map(question => {
       const answers = [...question.answers];
-      const correctAnswer = question.correct;
+      const correctIndex = question.correct;
       
       // Shuffle the answers array
       for (let i = answers.length - 1; i > 0; i--) {
@@ -445,10 +512,14 @@
         [answers[i], answers[j]] = [answers[j], answers[i]];
       }
       
+      // Find new correct index after shuffling
+      const correctAnswer = question.answers[correctIndex].text;
+      const newCorrectIndex = answers.findIndex(a => a.text === correctAnswer);
+      
       return {
-        ...question,
+        question: question.question,
         answers: answers,
-        correctIndex: answers.indexOf(correctAnswer)
+        correctIndex: newCorrectIndex
       };
     });
   }
@@ -486,7 +557,7 @@
       const button = document.createElement('button');
       button.className = 'answer-btn';
       button.innerHTML = `
-        <span style="flex-grow: 1">${answer}</span>
+        <span style="flex-grow: 1">${answer.text}</span>
         <span style="opacity: 0.5">${String.fromCharCode(65 + index)}</span>
       `;
       button.onclick = () => selectAnswer(index);
@@ -509,13 +580,19 @@
       }
     });
 
-    const explanation = document.createElement('div');
-    explanation.className = isCorrect ? 'correct-explanation' : 'incorrect-explanation';
-    explanation.innerHTML = isCorrect 
-      ? `✅ Correct! ${question.explanation}`
-      : `❌ Sorry, that's incorrect. ${question.explanation}`;
-    
-    document.getElementById('answers').appendChild(explanation);
+    // Show explanations for all answers
+    question.answers.forEach((answer, index) => {
+      const explanation = document.createElement('div');
+      explanation.className = 'answer-explanation';
+      if(index === question.correctIndex) {
+        explanation.innerHTML = `<strong>${String.fromCharCode(65 + index)}:</strong> ${answer.explanation}`;
+        explanation.style.borderLeft = '3px solid #2ecc71';
+      } else {
+        explanation.innerHTML = `<strong>${String.fromCharCode(65 + index)}:</strong> ${answer.explanation}`;
+        explanation.style.borderLeft = '3px solid rgba(255,255,255,0.2)';
+      }
+      document.getElementById('answers').appendChild(explanation);
+    });
 
     if(isCorrect) {
       score++;
@@ -525,6 +602,10 @@
         origin: { y: 0.6 },
         colors: ['#ffd700', '#e94560', '#2ecc71']
       });
+    } else {
+      // Shake animation for wrong answer
+      const selectedButton = buttons[selectedIndex];
+      selectedButton.style.animation = 'shake 0.5s ease';
     }
 
     document.getElementById('score').textContent = score;
