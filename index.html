@@ -13,6 +13,7 @@
       --gold: #ffd700;
       --text: #f1f1f1;
       --shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      --progress: #2ecc71;
     }
 
     body {
@@ -134,17 +135,30 @@
     }
 
     .progress-container {
-      height: 8px;
+      height: 10px;
       background: rgba(255,255,255,0.1);
       border-radius: 10px;
       overflow: hidden;
       margin: 1.5rem 0;
+      position: relative;
     }
 
     .progress-bar {
       height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--gold));
-      transition: width 0.5s ease;
+      width: 0;
+      background: linear-gradient(90deg, var(--progress), #27ae60);
+      border-radius: 10px;
+      transition: width 0.5s ease-out;
+      box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+    }
+
+    .progress-text {
+      position: absolute;
+      right: 0;
+      top: -25px;
+      font-size: 0.9rem;
+      color: var(--text);
+      opacity: 0.8;
     }
 
     .explanation {
@@ -289,14 +303,13 @@
     </div>
 
     <div class="quiz-card" id="quizContainer" style="display: none;">
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-text" id="progressText">0%</div>
+      </div>
       <div class="score-panel">
-        <div class="progress-container">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <div>Question: <span id="current">1</span>/15</div>
-          <div>Score: <span id="score">0</span> 🌟</div>
-        </div>
+        <div>Question: <span id="current">1</span>/15</div>
+        <div>Score: <span id="score">0</span> 🌟</div>
       </div>
       <div id="question" class="question"></div>
       <div id="answers"></div>
@@ -309,113 +322,143 @@
     {
       question: "What was the exact date the Frank family went into hiding?",
       answers: ["June 12, 1942 (Anne's birthday)", "July 6, 1942", "September 1, 1942"],
-      correct: 1,
+      correct: "July 6, 1942",
       explanation: "The Frank family entered the Secret Annex on July 6, 1942, after Margot received a call-up notice for a Nazi work camp."
     },
     {
       question: "Which Nazi official led the raid on the Secret Annex?",
       answers: ["Adolf Eichmann", "Karl Silberbauer", "Heinrich Himmler"],
-      correct: 1,
+      correct: "Karl Silberbauer",
       explanation: "SS-Oberscharführer Karl Silberbauer conducted the raid on August 4, 1944, after receiving an anonymous tip."
     },
     {
       question: "What percentage of Dutch Jews were deported during the Holocaust?",
       answers: ["About 50%", "Approximately 73%", "Nearly 90%"],
-      correct: 1,
+      correct: "Approximately 73%",
       explanation: "Approximately 73% of Dutch Jews perished - the highest percentage in Western Europe."
     },
     {
       question: "Where did Anne and Margot Frank die?",
       answers: ["Auschwitz", "Bergen-Belsen", "Sobibor"],
-      correct: 1,
+      correct: "Bergen-Belsen",
       explanation: "The sisters died of typhus in Bergen-Belsen in early 1945, just weeks before liberation."
     },
     {
       question: "What was Anne's original title for her diary?",
       answers: ["The Secret Annex", "Diary of a Young Girl", "My Hidden Years"],
-      correct: 0,
+      correct: "The Secret Annex",
       explanation: "Anne titled her work 'Het Achterhuis' (The Secret Annex), envisioning it as a novel about her experience."
     },
     {
       question: "Which helper was arrested with the annex residents?",
       answers: ["Miep Gies", "Victor Kugler", "Johannes Kleiman"],
-      correct: 1,
+      correct: "Victor Kugler",
       explanation: "Victor Kugler was imprisoned but survived. Miep Gies wasn't arrested as the officer recognized her Austrian heritage."
     },
     {
       question: "How did Anne organize her diary entries?",
       answers: ["Single notebook", "Three notebooks with loose pages", "Daily letters to an imaginary friend"],
-      correct: 1,
+      correct: "Three notebooks with loose pages",
       explanation: "Anne used 3 notebooks and 324 loose sheets between 1942-1944, later revising her work for publication."
     },
     {
       question: "What proved the diary's authenticity?",
       answers: ["Handwriting analysis by German police", "Testimony from Miep Gies", "Otto Frank's verification"],
-      correct: 0,
+      correct: "Handwriting analysis by German police",
       explanation: "The German Federal Criminal Police Office conducted forensic analysis in 1980, confirming the handwriting was Anne's."
     },
     {
       question: "Where was Anne Frank born?",
       answers: ["Amsterdam", "Berlin", "Frankfurt"],
-      correct: 2,
+      correct: "Frankfurt",
       explanation: "Anne was born in Frankfurt, Germany on June 12, 1929. Her family moved to Amsterdam in 1933 after Hitler rose to power."
     },
     {
       question: "What recognition did the diary receive posthumously?",
       answers: ["Pulitzer Prize", "Prix de Paris", "Nobel Peace Prize nomination"],
-      correct: 1,
+      correct: "Prix de Paris",
       explanation: "Anne won the Prix de Paris literary prize in 1957 through a competition she had entered in 1944."
     },
     {
       question: "What business operated in the building hiding the annex?",
       answers: ["A bank", "Opekta Works (pectin company)", "A publishing house"],
-      correct: 1,
+      correct: "Opekta Works (pectin company)",
       explanation: "Otto Frank's company Opekta Pectin (later Gies & Co) operated on the Prinsengracht canal premises."
     },
     {
       question: "Which event gave Anne hope in June 1944?",
       answers: ["Italian surrender", "D-Day landings", "Stalingrad victory"],
-      correct: 1,
+      correct: "D-Day landings",
       explanation: "The D-Day invasion on June 6, 1944 made Anne believe liberation was near, as reflected in her final entries."
     },
     {
       question: "What caused Anne and Margot's deaths?",
       answers: ["Starvation", "Typhus epidemic", "Execution"],
-      correct: 1,
+      correct: "Typhus epidemic",
       explanation: "A typhus epidemic killed about 17,000 Bergen-Belsen prisoners in early 1945, including the Frank sisters."
     },
     {
       question: "Where are the original diary pages preserved?",
       answers: ["Anne Frank House", "NIOD Institute", "Yad Vashem"],
-      correct: 1,
+      correct: "NIOD Institute",
       explanation: "The Netherlands Institute for War Documentation (NIOD) in Amsterdam preserves the original manuscripts."
     },
     {
       question: "What was edited from early diary editions?",
       answers: ["Only critical remarks", "Only personal reflections", "Both personal and critical content"],
-      correct: 2,
+      correct: "Both personal and critical content",
       explanation: "Otto Frank removed about 30% of content including Anne's sexual development notes and criticisms of others."
     }
   ];
 
   let currentQuestion = 0;
   let score = 0;
+  let randomizedQuestions = [];
+
+  function initializeQuiz() {
+    randomizedQuestions = quizData.map(question => {
+      const answers = [...question.answers];
+      const correctAnswer = question.correct;
+      
+      // Shuffle the answers array
+      for (let i = answers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [answers[i], answers[j]] = [answers[j], answers[i]];
+      }
+      
+      return {
+        ...question,
+        answers: answers,
+        correctIndex: answers.indexOf(correctAnswer)
+      };
+    });
+  }
+
+  function updateProgressBar() {
+    const progress = ((currentQuestion + 1) / quizData.length) * 100;
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    
+    progressBar.style.width = `${progress}%`;
+    progressText.textContent = `${Math.round(progress)}%`;
+  }
 
   function startQuiz() {
+    initializeQuiz();
     document.getElementById('introScreen').style.display = 'none';
     document.getElementById('quizContainer').style.display = 'block';
     showQuestion();
   }
 
   function showQuestion() {
-    const question = quizData[currentQuestion];
+    const question = randomizedQuestions[currentQuestion];
     document.getElementById('question').innerHTML = `
       <div style="font-size: 1.8rem; margin-bottom: 1rem;">📜</div>
       ${question.question}
     `;
     
-    document.getElementById('progressBar').style.width = 
-      `${((currentQuestion + 1)/quizData.length * 100)}%`;
+    updateProgressBar();
+    document.getElementById('current').textContent = currentQuestion + 1;
 
     const answersDiv = document.getElementById('answers');
     answersDiv.innerHTML = '';
@@ -433,14 +476,14 @@
   }
 
   function selectAnswer(selectedIndex) {
-    const question = quizData[currentQuestion];
+    const question = randomizedQuestions[currentQuestion];
     const buttons = document.getElementsByClassName('answer-btn');
-    const isCorrect = selectedIndex === question.correct;
+    const isCorrect = selectedIndex === question.correctIndex;
 
     Array.from(buttons).forEach(button => button.disabled = true);
 
     Array.from(buttons).forEach((button, index) => {
-      if(index === question.correct) {
+      if(index === question.correctIndex) {
         button.classList.add('correct');
       } else if(index === selectedIndex) {
         button.classList.add('incorrect');
@@ -471,7 +514,7 @@
 
   function nextQuestion() {
     currentQuestion++;
-    if(currentQuestion < quizData.length) {
+    if(currentQuestion < randomizedQuestions.length) {
       resetState();
       showQuestion();
     } else {
@@ -596,10 +639,9 @@
   console.assert(quizData.length === 15, "Should have 15 questions");
   quizData.forEach((q, i) => {
     console.assert(q.answers.length === 3, `Question ${i+1} needs 3 answers`);
-    console.assert(q.correct >= 0 && q.correct <= 2, `Question ${i+1} has invalid correct index`);
+    console.assert(q.answers.includes(q.correct), `Question ${i+1} has invalid correct answer`);
     console.assert(q.explanation, `Question ${i+1} missing explanation`);
   });
-  console.assert(typeof startQuiz === 'function', "Missing startQuiz function");
   </script>
 </body>
 </html>
